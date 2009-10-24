@@ -1,31 +1,50 @@
+#include <stdlib.h>
+#include <stdio.h>
 
-struct fraction{
-  long long num = 0;
-  long long denom = 0;
-};
+typedef struct fraction{
+  long num;
+  long denom;
+} Fraction;
 
-typedef struct fraction Fraction;
+long gcd(long a, long b);
 
 
-
-long long main
+long gcd(long a, long b)
 {
-
-  while(/*more input*/)
+  long tmp = 0;
+  if (b > a)
   {
-    /*dummy*/ = input();
-    
-
+    tmp = b;
+    b = a;
+    a = tmp;
+  }  
+  while(b != 0)
+  {
+    tmp = b;
+    b = a % b;
+    a = tmp;
   }
+  return a;
+}
+
+Fraction simplify(Fraction a)
+{
+  Fraction rtn;
+  long GCD = gcd(a.num, a.denom);
+  rtn.num = a.num / GCD;
+  rtn.denom = a.denom / GCD;
+
+  return rtn;
 }
 
 
-Fraction makeFrac(long long num, long long denom)
+Fraction makeFrac(long num, long denom)
 {
   Fraction rtn;
   rtn.num = num;
   rtn.denom = denom;
-  return simplify(rtn);
+  rtn = simplify(rtn);
+  return rtn;
 }
 
 Fraction addFrac(Fraction a, Fraction b)
@@ -47,29 +66,20 @@ Fraction multFrac(Fraction a, Fraction b)
   return simplify(rtn);
 }
 
-Fraction simplify(Fraction a)
-{
-  Fraction rtn;
-  long long GCD = gcd(a.num, a.denom);
-  rtn.num = a.num / GCD;
-  rtn.denom = a.denom / GCD;
 
-  return rtn;
-}
 
-long long gcd(a, b)
+int main()
 {
-  long long tmp = 0;
-  if (b > a)
-    gcd(b, a);
-  else
-  {
-    while(b != 0)
-    {
-      t = b;
-      b = a % b;
-      a = t;
-    }
-    return a;
-  }
+
+/*   while(/\*more input*\/) */
+/*   { */
+/*     /\*dummy*\/ = input(); */
+    
+
+/*   } */
+
+  //printf("%ld", sizeof(long));
+  Fraction f = makeFrac(36, 81);
+  
+  printf("%ld/%ld\n", f.num, f.denom);
 }
