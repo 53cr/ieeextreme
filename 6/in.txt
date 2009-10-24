@@ -1,0 +1,10 @@
+8 4
+madrid chicago rio tokyo
+madrid chicago tokyo rio
+chicago rio tokyo madrid
+madrid rio tokyo chicago
+rio tokyo chicago madrid
+madrid rio tokyo chicago
+tokyo rio chicago madrid
+rio madrid tokyo chicago
+rio tokyo chicago madrid
