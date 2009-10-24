@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public class Main
 {
 
-  private class Fraction
+  private static class Fraction
   {
     public int num;
     public int denom;
@@ -33,7 +33,7 @@ public class Main
       int newNum = (a*d) + (b*c);
       int newDenom = b*d;
 
-      return (new Fraction(newNum, newDenom)).simplify;
+      return (new Fraction(newNum, newDenom)).simplify();
     }
     public Fraction multiply(Fraction other)
     {
@@ -46,21 +46,20 @@ public class Main
       int newDenom = b*d;
 
      
-      return (new Fraction(newNum, newDenom)).simplify;
+      return (new Fraction(newNum, newDenom)).simplify();
     }
 
-    public void simplify()
+    public Fraction simplify()
     {
       int a = this.num;
       int b = this.denom;
 
       int GCD = gcd(a,b);
 
-      this.num /= gcd;
-      this.denom /= gcd;
+      return new Fraction(a / GCD, b / GCD);
     }
 
-    private gcd(int a, int b)
+    private int gcd(int a, int b)
     {
       if (b > a)
       {
@@ -74,7 +73,7 @@ public class Main
         b = a % b;
         a = tmp;
       }
-      return a     
+      return a;    
     }
 
     public String toString()
@@ -118,7 +117,7 @@ public class Main
 
 
 
-  public static void compute(int d, int n)
+  public static Fraction compute(int d, int n)
   {
     Fraction dieprobs[] = new Fraction[6];
     Fraction oldprobs[] = new Fraction[6];
@@ -126,6 +125,9 @@ public class Main
     {
       dieprobs[i] = new Fraction(1,6);
       oldprobs[i] = new Fraction(1,6);
+
+      System.out.println("dieprobs[i] = " + dieprobs[i]);
+      System.out.println("oldprobs[i] = " + oldprobs[i]);
     }
 
     for(int i = 0; i < d-1; i++)
@@ -133,38 +135,80 @@ public class Main
       oldprobs = convolve(dieprobs, oldprobs);
     }
     n -= d;
-    Fraction accum = new Fraction(0,1);
-    for(int i = n; i <= 6*d; i++)
+    if(n < 0)
     {
+      n = 0;
+    }
+    Fraction accum = new Fraction(0,1);
+
+    System.out.println("oldprobs.length: " + oldprobs.length);
+    
+    for(int i = n; i < oldprobs.length; i++)
+    {
+      System.out.println("oldprobs[i]: " + oldprobs[i]);
       accum = accum.add(oldprobs[i]);
     }
+    return accum;
   }
 
   
-  int[] convolve(int[] xn, int[] hn)
+  public static Fraction[] convolve(Fraction[] xn, Fraction[] hn)
   {
     int i, j, k;
-    int[] yn = new int[(xn.size + hn.size - 1)];
+    Fraction[] yn = new Fraction[(xn.length + hn.length - 1)];
 
    
-    // start convolution from out[kernelSize-1] to out[dataSize-1] (last)
-    for(i = hn.size-1; i < xn.size; ++i)
+    // start convolution from out[kernelLength-1] to out[dataLength-1] (last)
+    for(i = hn.length-1; i < yn.length; ++i)
     {
       yn[i] = new Fraction(0,1);                             // init to 0 before accumulate
 
-      for(j = i, k = 0; k < hn.size; --j, ++k)
-        yn[i] = yn[i].add(xn[j].multiply(hn[k]))
+      for(j = i, k = 0; k < hn.length; --j, ++k)
+      {
+        System.out.println("i: "+i+" j: "+j+" k: "+k);
+        Fraction x;
+        if(j >= 0 && j < xn.length)
+          x = xn[j];
+        else
+          x = new Fraction(0,1);
+        Fraction h;
+        if(k>= 0 && j < hn.length)
+          h = hn[k];
+        else
+          h = new Fraction(0,1);
+        yn[i] = yn[i].add(x.multiply(h));
+        //  System.out.println("yn[i] = " + yn[i]);
+      }
+      System.out.println("yn["+i+"] = " + yn[i]);
     }
 
-    // convolution from out[0] to out[kernelSize-2]
-    for(i = 0; i < hn.size - 1; ++i)
+    // convolution from out[0] to out[kernelLength-2]
+    System.out.println("DEBUG: Before second loop");
+    for(i = 0; i < hn.length - 1; ++i)
     {
       yn[i] = new Fraction(0,1);                             // init to 0 before sum
 
       for(j = i, k = 0; j >= 0; --j, ++k)
-        yn[i] = yn.add(xn[j].multiply(hn[k]));
+      {
+        System.out.println("i: "+i+" j: "+j+" k: "+k);
+        Fraction x;
+        if(j >= 0 && j < xn.length)
+          x = xn[j];
+        else
+          x = new Fraction(0,1);
+        Fraction h;
+        if(k >= 0 && k < hn.length)
+          h = hn[k];
+        else
+          h = new Fraction(0,1);
+        yn[i] = yn[i].add(x.multiply(h));
+      }
+      System.out.println("yn["+i+"] = " + yn[i]);
     }
 
+//     for(int z= 0; z < yn.length; z++)
+//       System.out.println("yn[" + z + "] = " + yn[z]);
+    
     return yn;
   }
 
