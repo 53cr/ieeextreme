@@ -6,15 +6,15 @@ public class Main
   public static void main(String args[])
   {
     Scanner in = new Scanner(System.in);
-    String numberS = in.nextLine();
+    String numberString = in.nextLine();
 
-    int[] numbers = new int[numberS.length()];
-    for(int i = 0; i < numberS.length(); i++) {
-      numbers[i] = Integer.parseInt(Character.toString(numberS.charAt(i)));
+    int[] numbers = new int[numberString.length()];
+    for(int i = 0; i < numberString.length(); i++) {
+      numbers[i] = Integer.parseInt(Character.toString(numberString.charAt(i)));
     }
 
-    System.out.printf("numberS.length: %d\n", numberS.length());
-    int[] counts = new int[numberS.length()];
+    //System.out.printf("numberString.length: %d\n", numberString.length());
+    int[] counts = new int[numberString.length()];
     ArrayList<Integer> primes = new ArrayList<Integer>();
     doit(0,numbers, counts, primes, -1,0);
     
