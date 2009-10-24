@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Stack;
 
 public class Main
 {
@@ -36,7 +35,7 @@ public class Main
 
     //printCity();
 
-    int cov_max = 0;
+    int cov_max = -1;
     int best_x = 0;
     int best_y = 0;
     int bleh;
@@ -52,7 +51,8 @@ public class Main
         }
       }
     }
-
+    
+    if (cov_max < 0) cov_max = 0;
     System.out.printf("%d %d\n%d\n", best_y+1, best_x+1, cov_max);
   }
 
@@ -61,7 +61,7 @@ public class Main
     for (int i=x-range; i<=x+range; ++i) {
       for (int j=Math.max(y-range+(x-i),y-range-(x-i)); j<=Math.min(y+range-(x-i),y+range+(x-i)); ++j) {
         try {
-          if (city[j][i] == 'R' || city[j][i] == 'P') {
+          if (city[j][i] == 'R') {
             city[j][i] = 'X';
           }
         } catch (Exception e) {}
@@ -93,15 +93,4 @@ public class Main
     System.out.println("--------------------");
   }
   
-}
-
-class Tuple3 {
-  public int x, y, z;
-
-  public Tuple3(int x, int y, int z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
-
 }
