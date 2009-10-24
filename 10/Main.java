@@ -38,6 +38,8 @@ public class Main
       //   System.out.print(alchars.get(i).charValue() + " ");
       //p("");
 
+//      System.out.println("Testing word " + this.word);
+      
       char[] tiles = new char[alchars.size()];
       boolean[] mask = new boolean[tiles.length];
       int[] rtn = {0,0};
@@ -57,50 +59,78 @@ public class Main
       int i;
       for(i = 0; !breaker && i < wordchars.length; i++)
       {
+        //p("entered For-i");
+
+        //System.out.println("i: " + i);
         char chToCheck = wordchars[i];
         //System.out.println("Checking char: " + chToCheck);
         innerbreaker = false;
         for(int j = 0; !innerbreaker && j < tiles.length; j++)
         {
+          //p("Entered for-j(1)");
           //System.out.println("Comparing " + chToCheck + " with " + tiles[j]);
           //System.out.println("Is masked? " + mask[j]);
           if(tiles[j] == chToCheck && !mask[j])
           {
             //p("matches!");
+            //System.out.println("Matching tile " + tiles[j] + " with char");
             mask[j] = true;
             rtn[0] += pts.get(new Character(tiles[j])).intValue();
             innerbreaker = true;
           }
-          else if(j == tiles.length-1)
+
+        }
+        //p("Passed for-j(1)");
+        for(int j = 0; !innerbreaker && j < tiles.length; j++)
+        {
+          //p("entered for-j(2)");
+          if(tiles[j] == 'J' && !mask[j])
+          {
+            //System.out.println("Consuming a blank to match char " + chToCheck);
+            rtn[1] = 1;
+            mask[j] = true;
+            innerbreaker = true;
+          }
+          else if (j == tiles.length-1)
           {
             breaker = true;
           }
         }
-      }
-      breaker = false;
-      if(i != wordchars.length)
-      {
-        for(;!breaker && i < wordchars.length; i++)
+
+//        System.out.println("DEBUG: innerbreaker: " + innerbreaker);
+//        System.out.println("DEBUG: breaker: " + breaker);
+        //p("Passed for-j(2)");
+
+        if(!innerbreaker)
         {
-          innerbreaker = false;
-          char chToCheck = wordchars[i];
-          for(int j = 0; !innerbreaker && j < tiles.length; j++)
-          {
-            if(tiles[j] == 'J' && !mask[j])
-            {
-              mask[j] = true;
-              rtn[1] = 1;
-              innerbreaker = true;
-            }
-            else if (j == tiles.length-1)
-            {
-              breaker = true;
-            }
-          }
+          //        p("activated breaker clause");
+          breaker = true;
         }
       }
 
-      if (i != wordchars.length)
+      // if(i != wordchars.length)
+//       {
+//         for(;!breaker && i < wordchars.length; i++)
+//         {
+//           innerbreaker = false;
+//           char chToCheck = wordchars[i];
+//           for(int j = 0; !innerbreaker && j < tiles.length; j++)
+//           {
+//             if(tiles[j] == 'J' && !mask[j])
+//             {
+//               mask[j] = true;
+//               rtn[1] = 1;
+//               innerbreaker = true;
+//             }
+//             else if (j == tiles.length-1)
+//             {
+//               breaker = true;
+//             }
+//           }
+//         }
+//       }
+
+      if (breaker)
       {
         rtn[0] = -1;
         rtn[1] =  0;
@@ -115,10 +145,10 @@ public class Main
     //this < other => (this - other) < 0
     public int compareTo(Object other)
     {
-      int rtn = val - ((Word)other).val;
+      int rtn = ((Word)other).val - val;
       if(rtn == 0)
       {
-        return ((Word)other).word.compareTo(word);
+        return word.compareTo(((Word) other).word);
       }
       return rtn;
     }
@@ -248,7 +278,7 @@ public class Main
         {
           //p("Blanks used");
           //System.out.println("adding " + hiscorew.word + " to list");
-          //System.out.println("Recursing to next word");
+          //System.out.println("Recursing to next word\n");
           answers.add(new Word(hiscorew.word, highscore[0]));
         }
       }
@@ -257,12 +287,12 @@ public class Main
       if (!answers.isEmpty())
       {
 
-//         Iterator debugiter = answers.iterator();
-//         while(debugiter.hasNext())
-//           System.out.println("Debug: " + debugiter.next());
+         Iterator<Word> debugiter = answers.iterator();
+         // while(debugiter.hasNext())
+         //System.out.println("Debug: " + debugiter.next());
         
 
-        hiscorew = answers.last();
+         hiscorew = debugiter.next();
         System.out.println(hiscorew);
       }
       else
