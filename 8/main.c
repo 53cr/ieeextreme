@@ -29,12 +29,19 @@ long gcd(long a, long b)
 
 Fraction simplify(Fraction a)
 {
-  Fraction rtn;
-  long GCD = gcd(a.num, a.denom);
-  rtn.num = a.num / GCD;
-  rtn.denom = a.denom / GCD;
+  if(a.num == 0 && a.denom == 0)
+  {
+    return a;
+  }
+  else
+  {
+    Fraction rtn;
+    long GCD = gcd(a.num, a.denom);
+    rtn.num = a.num / GCD;
+    rtn.denom = a.denom / GCD;
 
-  return rtn;
+    return rtn;
+  }
 }
 
 
@@ -70,13 +77,17 @@ Fraction multFrac(Fraction a, Fraction b)
 
 int main()
 {
-
-/*   while(/\*more input*\/) */
-/*   { */
-/*     /\*dummy*\/ = input(); */
+  int D = 0;
+  int N = 0;
+  Fraction out = makeFrac(0,0);
+  
+  while(scanf("%D %D", &D, &H))
+  {
+    for(; N <= pow(6, D), N++)
+    
     
 
-/*   } */
+  }
 
   //printf("%ld", sizeof(long));
   Fraction f = makeFrac(36, 81);
