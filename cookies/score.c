@@ -29,6 +29,7 @@ main() {
 
 	}
 
+  printf("%d\n", (num_appear<252) ? 0 : 500-i);
 	return (num_appear<252) ? 0 : 500-i;
 
 }
