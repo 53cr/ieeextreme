@@ -164,7 +164,7 @@ public class Main
     for(int i = 0; i < numwords; i++)
     {
       instr = in.nextLine();
-      p("Word to be inserted: " = instr);
+      p("Word to be inserted: " + instr);
       dict.add(new Word(instr, score(instr, pts)));
     }
 
