@@ -36,7 +36,7 @@ public class Main
       }
 
       // figure out width and height...
-      for (j=0;j<20;j++) {
+      for (j=0;j<600;j++) {
         if (floorData[z][j].length == 600) { 
           height = j;
           break;
@@ -97,6 +97,11 @@ public class Main
           check.push(new Point(p.x+1,p.y));
           check.push(new Point(p.x,p.y-1));
           check.push(new Point(p.x,p.y+1));
+   
+          check.push(new Point(p.x-1,p.y-1));
+          check.push(new Point(p.x+1,p.y+1));
+          check.push(new Point(p.x+1,p.y-1));
+          check.push(new Point(p.x-1,p.y+1));
    
           if (f == 'C') numComputers++;
           floorData[z][p.y][p.x] = 'X';
