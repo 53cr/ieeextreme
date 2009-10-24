@@ -50,21 +50,39 @@ public class Main
         //p("Checking against " + tmp.name + ": " + tmp.heightAtLoc(peaks.get(key)));
         
         
-        if(!(key2.equals(key))
-           && peaks.get(key2).heightAtLoc(peaks.get(key)) > peaks.get(key).h)
-          blocked = true;
-        
+        if(!(key2.equals(key)))
+        {
+          if(peaks.get(key2).heightAtLoc(peaks.get(key)) > peaks.get(key).h)
+          {
+            blocked = true;
+          }
+          else if (peaks.get(key2).heightAtLoc(peaks.get(key)) == peaks.get(key).h)
+          {
+            Iterator<String> iter3 = peaks.keySet().iterator();
+            String key3 = "";
+            Boolean front = true;
+            while(front && iter3.hasNext())
+            {
+              key3 = iter3.next();
+              if( (peaks.get(key3).x < peaks.get(key).x) && !(key.equals(key3)))
+              {
+                front = false; 
+              }
+            }
+          }
+        }
       }
+    
       if (!blocked)
         answer.add(peaks.get(key));
     }
-    Iterator<Peak> ansiter = answer.iterator();
-    while(ansiter.hasNext())
-    {
-      Peak tmp = ansiter.next();
-      System.out.println(tmp.name);
+      Iterator<Peak> ansiter = answer.iterator();
+      while(ansiter.hasNext())
+      {
+        Peak tmp = ansiter.next();
+        System.out.println(tmp.name);
+      }
     }
-  }
 
   private static class Peak implements Comparable
   {
