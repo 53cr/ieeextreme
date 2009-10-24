@@ -5,25 +5,29 @@ import java.math.BigInteger;
 public class Main
 {
   
-  private class Fraction
+  private static class Fraction
   {
     BigInteger num;
     BigInteger denom;
 
-    static final Fraction ZERO = new Fraction(0, 1);
+    public Fraction()
+    {
+      num = BigInteger.ZERO;
+      denom = BigInteger.ONE;
+    }
     
     public Fraction(BigInteger a, BigInteger b)
     {
-      if(a.equals(BigInteger.ZERO) && b.equals(BigInteger.ZERO))
+      if(a.equals(BigInteger.ZERO))
       {
-        num = 0;
-        denom = 1;
+        num = BigInteger.ZERO;
+        denom = BigInteger.ONE;
       }
       else
       {
         BigInteger GCD = a.gcd(b);
         num = a.divide(GCD);
-        denom = b.divide(GCD)
+        denom = b.divide(GCD);
       }
     }
     
@@ -84,10 +88,10 @@ public class Main
     {
       String instr = in.next();
       String[] inNums = instr.split("\\s+");
-      int D = inNums[0];
-      int N = inNums[1];
+      int D = Integer.parseInt(inNums[0]);
+      int N = Integer.parseInt(inNums[1]);
        
-      Fraction calcVal = Fraction.ZERO;
+      Fraction calcVal = new Fraction();
       for(int i = N; i <= 6*D; i++)
       {
         calcVal = calcVal.add(calc(D, i));
@@ -97,27 +101,50 @@ public class Main
     }
   }
   
-  public Fraction calc(int D, int N)
+  public static Fraction calc(int D, int N)
   {
 
-    if(D == 1)
+    Fraction powVal =
+      new Fraction(
+        new BigInteger("1"), new BigInteger("6").pow(D));
+
+    Fraction sumVal = new Fraction();
+
+    for(int i = 0; i <= ((N-D)/6); i++)
     {
-      if(N >= 1 && N <= 6)
-        return new Fraction(1, 6);
-      else
-        return Fraction.ZERO;
-    }
-    else
-    {
-      Fraction rtn = Fraction.ZERO;
-      for(int i = 1; i < N; i++)
+      int coef = -1;
+      if(i % 2 == 0)
       {
-        rtn = rtn.add(calc(1, i).multiply(calc(D-1, N-i)));
+        coef = 1;
       }
-      return rtn;
+      BigInteger middle = bin(D, i);
+      BigInteger end = bin(N - (6*i) - 1, N-1);
+      BigInteger total = middle.add(end);
+      total = total.add(new BigInteger(String.valueOf(coef)));
+
+      sumVal.add( new Fraction(total, BigInteger.ONE));
+    }
+    return sumVal.multiply(powVal);
+  }
+
+  public static BigInteger bin(int n, int r)
+  {
+    if(r > n)
+      return BigInteger.ZERO;
+
+    if(r > (n/2))
+      r = n-r;
+
+    BigInteger accum = BigInteger.ONE;
+
+    for(int i = 1; i <= r; i++)
+    {
+      accum =
+        accum.multiply(new BigInteger( String.valueOf(n-r+i))).divide(
+          new BigInteger(String.valueOf(i)));
     }
 
-    
+    return accum;
   }
 }
 
