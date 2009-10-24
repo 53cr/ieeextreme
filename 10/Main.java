@@ -2,7 +2,12 @@ import java.util.*;
 
 public class Main
 {
+  private static void p(String s)
+  {
+    System.out.println(s);
+  }
 
+  
   private static class Word implements Comparable
   {
     public String word;
@@ -18,10 +23,10 @@ public class Main
     //-1 if cannot create
     public int[] canCreate(ArrayList<Character> alchars, HashMap<Character,Integer> pts)
     {
-      char[] tiles = new char[alchars.length()];
-      boolean[] mask = new boolean[chars.length()];
+      char[] tiles = new char[alchars.size()];
+      boolean[] mask = new boolean[tiles.length];
       int[] rtn = {0,0};
-      for(int i = 0; i < alchars.length(); i++)
+      for(int i = 0; i < alchars.size(); i++)
       {
         tiles[i] = alchars.get(i).charValue();
       }
@@ -61,10 +66,10 @@ public class Main
           char chToCheck = wordchars[i];
           for(int j = 0; !innerbreaker && j < tiles.length; j++)
           {
-            if(tiles[J] == 'J' && !mask[j])
+            if(tiles[j] == 'J' && !mask[j])
             {
               mask[j] = true;
-              rtn[1] = 1
+              rtn[1] = 1;
               innerbreaker = true;
             }
             else if (j == tiles.length-1)
@@ -77,28 +82,29 @@ public class Main
 
       if (i != wordchars.length)
       {
-        rtn = {-1,0};
+        rtn[0] = -1;
+        rtn[1] =  0;
         return rtn;
       }
       else
         return rtn;
     }
+    // this.compareTo(other) < 0 iff this < other
 
-    //check if we can use blanks
-    for(int i = 0; i < wordchars.length 
-          }
+    //this < other => (other - this) > 0
+    //this < other => (this - other) < 0
+    public int compareTo(Object other)
+    {
+      int rtn = val - ((Word)other).val;
+      if(rtn == 0)
+      {
+        word.compareTo(((Word)other).word);
+      }
+      return val - ((Word)other).val;
+    }
   }
-  // this.compareTo(other) < 0 iff this < other
 
-  //this < other => (other - this) > 0
-  //this < other => (this - other) < 0
-  public int compareTo(Object other)
-  {
-    return val - ((Word)other).val;
-  }
-}
-
-  public static int score(String a, HashMap<Character,Intetger> pts)
+  public static int score(String a, HashMap<Character,Integer> pts)
   {
     int rtn = 0;
 
@@ -113,45 +119,52 @@ public class Main
     Scanner in = new Scanner(System.in);
     String instr = "";
     HashMap<Character,Integer> pts = new HashMap<Character,Integer>();
-    ArrayList<ArrayList<Character>>> tiles =
+    ArrayList<ArrayList<Character>> tiles =
       new ArrayList<ArrayList<Character>>();
     TreeSet<Word> dict = new TreeSet<Word>();
-    
+
+    p("Created data structures");
     //Get characters
     in.nextLine(); //first line contains alphabet
 
+    
     //get scores;
     instr = in.nextLine();
+    p("Scores: " + instr);
     String[] tmparr = instr.split("\\s+");
 
-    for(int i = 0; i < tmparr.length; i++)
+    for(int i = 0; i < 26; i++)
     {
-      pts.put(new Character('a'+i), new Integer(tmparr[i]));
+      char tmp = (char) ('a' + i);
+      pts.put(new Character(tmp), new Integer(tmparr[i]));
     }
 
     //Get tiles
     instr = in.nextLine();
+    p("Num tiles: " + instr);
     int numplayers = Integer.parseInt(instr);
     for(int i = 0; i < numplayers; i++)
     {
       instr = in.nextLine();
+      p("Tiles for player " + i + ": " + instr);
       char[] chars = instr.toCharArray();
-
-      ArrayList listptr = tiles.get(i);
-      listptr = new ArrayList<Character>();
+      ArrayList<Character> listptr = new ArrayList<Character>();
       
       for(int j = 0; j < chars.length; j++)
       {
         listptr.add(new Character(chars[j]));
       }
+      tiles.add(listptr);
     }
 
     //Get dictionary
     instr = in.nextLine();
+    p("Lines in dictionary: " + instr);
     int numwords = Integer.parseInt(instr);
     for(int i = 0; i < numwords; i++)
     {
       instr = in.nextLine();
+      p("Word to be inserted: " = instr);
       dict.add(new Word(instr, score(instr, pts)));
     }
 
@@ -160,15 +173,17 @@ public class Main
     for(int i = 0; i < tiles.size(); i++)
     {
       boolean found = false;
-      int highscore[2];
+      int highscore[] = new int[2];
       Word hiscorew;
-      ArrayList listptr = tiles.get(i);
+      ArrayList<Character> listptr = tiles.get(i);
       TreeSet<Word> answers = new TreeSet<Word>();
 
+      Iterator<Word> iter = dict.descendingIterator();
       
-      for(int j = 0; !found && j < listptr.size(); j++) )
+      //for(int j = 0; !found && j < dict.size(); j++) 
+      while(!found && iter.hasNext())
       {
-        hiscorew = listptr.get(j);
+        hiscorew = iter.next();
         highscore = hiscorew.canCreate(listptr, pts);
         if (highscore[1] == 0)
         {
@@ -185,7 +200,7 @@ public class Main
       if (found)
       {
         hiscorew = answers.last();
-        System.out.println(hiscorew.val + " " hiscorew.word);
+        System.out.println(hiscorew.val + " " + hiscorew.word);
       }
       else
         System.out.println("pass");
