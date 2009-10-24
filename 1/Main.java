@@ -64,7 +64,9 @@ public class Main
             while(front && iter3.hasNext())
             {
               key3 = iter3.next();
-              if( (peaks.get(key3).x < peaks.get(key).x) && !(key.equals(key3)))
+              if( (peaks.get(key3).x < peaks.get(key).x) &&
+                  (peaks.get(key3).y == peaks.get(key).y)
+                  && !(key.equals(key3)))
               {
                 front = false; 
               }
