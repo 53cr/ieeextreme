@@ -66,10 +66,10 @@ loop do
     else
       all << a
     end
-    if !valid(all,original)
-      puts "#{a.inspect} + #{old.inspect} => #{merged.inspect}"
-      quit
-    end
+#    if !valid(all,original)
+#      puts "#{a.inspect} + #{old.inspect} => #{merged.inspect}"
+#      quit
+#    end
   end
   candidate = all.join
   if candidate.length < smallest[:size]
